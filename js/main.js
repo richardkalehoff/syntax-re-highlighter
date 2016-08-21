@@ -8,7 +8,7 @@
     var language;
 
     convertBtn.addEventListener('click', function () {
-        language = languagePicker.options[ languagePicker.selectedIndex ].value;
+        language = getLanguage( languagePicker );
         codeContainer.className = 'language-' + language;
         var code = convertSource(sourceContainer.value, language);
 
@@ -16,6 +16,10 @@
 
         Prism.highlightElement(codeContainer);
     });
+
+    function getLanguage( el ) {
+        return el.options[ el.selectedIndex ].value;
+    }
 
     function convertSource(source, language) {
         if (language === 'markup') {
