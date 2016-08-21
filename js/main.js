@@ -14,7 +14,8 @@
         codeContainer.className = 'language-' + language;
         var code = convertSource(sourceContainer.value, language);
 
-        codeContainer.innerHTML = code; convertSource(sourceContainer.value, language);
+        codeContainer.innerHTML = code;
+        convertSource(sourceContainer.value, language);
 
         Prism.highlightElement(codeContainer);
 
