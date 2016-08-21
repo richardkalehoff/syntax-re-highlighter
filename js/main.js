@@ -32,7 +32,7 @@
         tokenSpans.forEach(function(span) {
             var color = window.getComputedStyle(span).getPropertyValue('color');
             color = convertToHex(color);
-            span.querySelector('button').classList.add(`{value:"${color}"}`);
+            span.querySelector('input').value = color;
         });
 
         jscolor.installByClassName('jscolor');
@@ -61,10 +61,10 @@
 
     function tokensToHtml(token) {
         if (Array.isArray(token)) {
-            return token.map(item => `<span class="prismToken token ${item}">${item} <button class="jscolor"></button></span>`).join('');
+            return token.map(item => `<span class="prismToken token ${item}">${item} <input class="jscolor"></span>`).join('');
         }
 
-        return `<span class="prismToken token ${token}">${token} <button class="jscolor"></button></span>`;
+        return `<span class="prismToken token ${token}">${token} <input class="jscolor"></span>`;
     }
 
     function getLanguage( el ) {
