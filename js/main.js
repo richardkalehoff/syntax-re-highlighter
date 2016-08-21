@@ -61,10 +61,10 @@
 
     function tokensToHtml(token) {
         if (Array.isArray(token)) {
-            return token.map(item => `<span class="prismToken token ${item}">${item} <input class="jscolor"></span>`).join('');
+            return token.map(item => `<span class="prismToken token ${item}">${item} <input class="jscolor" onchange="updateTokenColor(this.jscolor, this)" data-token=${item}></span>`).join('');
         }
 
-        return `<span class="prismToken token ${token}">${token} <input class="jscolor"></span>`;
+        return `<span class="prismToken token ${token}">${token} <input class="jscolor" onchange="updateTokenColor(this.jscolor, this)" data-token=${token}></span>`;
     }
 
     function getLanguage( el ) {
@@ -79,3 +79,10 @@
         return source;
     }
 })();
+
+function updateTokenColor(colorObj, inputEl) {
+    var token = inputEl.dataset.token;
+    var sheet = document.querySelector('#mainStylesheet').sheet;
+
+    sheet.insertRule(`.token.${token} { color: #${colorObj} }`, sheet.cssRules.length);
+}
