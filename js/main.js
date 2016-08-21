@@ -18,11 +18,28 @@
         Prism.highlightElement(codeContainer);
 
         tokenHtml = Object.keys(Prism.languages[language])
-            .map(token => `<span class="prismToken">${token}</span>`)
+            .map(extractInnerTokens)
+            .map(tokensToHtml)
             .join('');
 
         codeContainer.parentElement.insertAdjacentHTML('afterend', `<p>${tokenHtml}</p>`);
     });
+
+    function extractInnerTokens(token) {
+        if (Prism.languages[language][token]['inside'] === undefined) {
+            return token;
+        }
+        var innerTokens = Object.keys(Prism.languages[language][token]['inside']);
+        return innerTokens
+    }
+
+    function tokensToHtml(token) {
+        if (Array.isArray(token)) {
+            return token.map(item => `<span class="prismToken token ${item}">${item}</span>`).join('');
+        }
+
+        return `<span class="prismToken token ${token}">${token}</span>`;
+    }
 
     function getLanguage( el ) {
         return el.options[ el.selectedIndex ].value;
