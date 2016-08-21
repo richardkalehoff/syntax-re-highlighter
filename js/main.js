@@ -41,10 +41,10 @@
 
     function tokensToHtml(token) {
         if (Array.isArray(token)) {
-            return token.map(item => `<span class="prismToken token ${item}">${item}</span>`).join('');
+            return token.map(item => `<span class="prismToken token ${item}">${item} <button class="jscolor"></button></span>`).join('');
         }
 
-        return `<span class="prismToken token ${token}">${token}</span>`;
+        return `<span class="prismToken token ${token}">${token} <button class="jscolor"></button></span>`;
     }
 
     function getLanguage( el ) {
