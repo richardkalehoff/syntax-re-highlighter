@@ -5,6 +5,7 @@
     var sourceContainer = document.querySelector('#source');
     var languagePicker = document.querySelector('#language');
     var codeContainer = document.querySelector('#codeContainer');
+    var prismTokenContainer = document.querySelector('#prismTokens');
     var language;
     var tokenHtml;
 
@@ -22,8 +23,13 @@
             .map(tokensToHtml)
             .join('');
 
-        codeContainer.parentElement.insertAdjacentHTML('afterend', `<p>${tokenHtml}</p>`);
+        displayPrismTokens(prismTokenContainer, tokenHtml);
     });
+
+    function displayPrismTokens(el, html) {
+        el.textContent = '';
+        el.insertAdjacentHTML('afterbegin', `${html}`);
+    }
 
     function extractInnerTokens(token) {
         if (Prism.languages[language][token]['inside'] === undefined) {
