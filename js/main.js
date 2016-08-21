@@ -24,7 +24,27 @@
             .join('');
 
         displayPrismTokens(prismTokenContainer, tokenHtml);
+        fixButtonColors();
     });
+
+    function fixButtonColors() {
+        var tokenSpans = document.querySelectorAll('.prismToken')
+        tokenSpans.forEach(function(span) {
+            var color = window.getComputedStyle(span).getPropertyValue('color');
+            color = convertToHex(color);
+            span.querySelector('button').classList.add(`{value:"${color}"}`);
+        });
+
+        jscolor.installByClassName('jscolor');
+    }
+
+    function convertToHex(color) {
+        var rgb = color.match(/\d+/g);
+        var r = parseInt(rgb[0]).toString(16);
+        var g = parseInt(rgb[1]).toString(16);
+        var b = parseInt(rgb[2]).toString(16);
+        return '#' + r + g + b;
+    }
 
     function displayPrismTokens(el, html) {
         el.textContent = '';
