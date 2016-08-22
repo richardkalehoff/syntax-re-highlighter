@@ -7,25 +7,43 @@
     var codeContainer = document.querySelector('#codeContainer');
     var prismTokenContainer = document.querySelector('#prismTokens');
     var language;
-    var tokenHtml;
 
     convertBtn.addEventListener('click', function () {
         language = getLanguage( languagePicker );
         codeContainer.className = 'language-' + language;
         var code = convertSource(sourceContainer.value, language);
+        var tokenList;
+        var tokenHtml;
 
         codeContainer.innerHTML = code;
 
         Prism.highlightElement(codeContainer);
 
-        tokenHtml = Object.keys(Prism.languages[language])
-            .map(extractInnerTokens)
-            .map(tokensToHtml)
-            .join('');
+        tokenList = getInnerTokens(Prism.languages[language]);
+        tokenList = Array.from(new Set(tokenList));
+        tokenHtml = tokenList.map(tokensToHtml).join('');
 
         displayPrismTokens(prismTokenContainer, tokenHtml);
         fixButtonColors();
     });
+
+    function getInnerTokens(obj) {
+        var tokens = [];
+
+        for (var index in obj) {
+            if (obj.hasOwnProperty(index)) {
+                if (obj[index]['inside'] === undefined) {
+                    tokens.push(index);
+                } else {
+                    tokens.push(index);
+                    let innerTokenList = getInnerTokens(obj[index]['inside']);
+                    tokens = tokens.concat(innerTokenList);
+                }
+            }
+        }
+
+        return tokens;
+    }
 
     function fixButtonColors() {
         var tokenSpans = document.querySelectorAll('.prismToken')
@@ -49,14 +67,6 @@
     function displayPrismTokens(el, html) {
         el.textContent = '';
         el.insertAdjacentHTML('afterbegin', `${html}`);
-    }
-
-    function extractInnerTokens(token) {
-        if (Prism.languages[language][token]['inside'] === undefined) {
-            return token;
-        }
-        var innerTokens = Object.keys(Prism.languages[language][token]['inside']);
-        return innerTokens
     }
 
     function tokensToHtml(token) {
