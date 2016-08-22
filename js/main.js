@@ -49,19 +49,16 @@
         var tokenSpans = document.querySelectorAll('.prismToken')
         tokenSpans.forEach(function(span) {
             var color = window.getComputedStyle(span).getPropertyValue('color');
-            color = convertToHex(color);
+            color = '#' + color.match(/\d+/g).map(componentToHex).join('');
             span.querySelector('input').value = color;
         });
 
         jscolor.installByClassName('jscolor');
     }
 
-    function convertToHex(color) {
-        var rgb = color.match(/\d+/g);
-        var r = parseInt(rgb[0]).toString(16);
-        var g = parseInt(rgb[1]).toString(16);
-        var b = parseInt(rgb[2]).toString(16);
-        return '#' + r + g + b;
+    function componentToHex(c) {
+        const hex = parseInt(c).toString(16)
+        return hex.length === 1 ? '0' + hex : hex
     }
 
     function displayPrismTokens(el, html) {
