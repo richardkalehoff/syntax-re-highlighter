@@ -10,19 +10,21 @@
 </head>
 <body>
 
-    <textarea id="source" name="name" rows="8" cols="40"></textarea>
+    <div class="container">
+        <textarea id="source" name="name"></textarea>
 
-    <select id="language">
-        <option value="markup">HTML</option>
-        <option value="css">CSS</option>
-        <option value="javascript">JavaScript</option>
-    </select>
+        <select id="language">
+            <option value="markup">HTML</option>
+            <option value="css">CSS</option>
+            <option value="javascript">JavaScript</option>
+        </select>
 
-    <button id="convert" type="button">Convert</button>
+        <button id="convert" type="button">Convert</button>
 
-    <pre><code id="codeContainer"></code></pre>
+        <pre class="output-area"><code id="codeContainer"></code></pre>
 
-    <div id="prismTokens" class="prismTokens"></div>
+        <div id="prismTokens" class="prismTokens"></div>
+    </div>
 
     <script src="node_modules/prismjs/prism.js"></script>
     <script src="node_modules/he/he.js"></script>
