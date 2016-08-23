@@ -62,7 +62,21 @@ pre[class*="language-"] {
     background: none;
 }
 
-.prismToken {
+input {
+    border: none;
     cursor: pointer;
-    margin: 0.5em;
+    padding-left: 0.25em;
+    width: 4em;
+}
+
+.prismTokens {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.prismTokens span.token {
+    border: 1px solid;
+    margin: 0.25em 0.5em;
+    padding-left: 0.25em;
 }
