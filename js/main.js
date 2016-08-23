@@ -6,6 +6,7 @@
     var languagePicker = document.querySelector('#language');
     var codeContainer = document.querySelector('#codeContainer');
     var prismTokenContainer = document.querySelector('#prismTokens');
+    var outputContainer = document.querySelector('#output');
     var language;
 
     convertBtn.addEventListener('click', function () {
@@ -18,6 +19,7 @@
         codeContainer.innerHTML = code;
 
         Prism.highlightElement(codeContainer);
+        outputContainer.classList.add('has-content');
 
         tokenList = getInnerTokens(Prism.languages[language]);
         tokenList = Array.from(new Set(tokenList));

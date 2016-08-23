@@ -54,6 +54,10 @@ button {
     flex: 1;
 }
 
+.output-area.has-content {
+    border: 1px solid black;
+}
+
 pre[class*="language-"] {
     background: none;
 }
