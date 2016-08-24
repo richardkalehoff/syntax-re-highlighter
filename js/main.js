@@ -73,6 +73,15 @@
 
         return source;
     }
+
+    function updateStylesheet(token) {
+        var sheet = document.querySelector('#mainStylesheet').sheet;
+        var color = localStorage[token];
+
+        sheet.insertRule(`.token.${token} { color: #${color} }`, sheet.cssRules.length);
+    }
+
+    Object.keys(localStorage).map(updateStylesheet);
 })();
 
 function updateTokenColor(colorObj, inputEl) {
