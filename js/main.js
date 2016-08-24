@@ -80,4 +80,5 @@ function updateTokenColor(colorObj, inputEl) {
     var sheet = document.querySelector('#mainStylesheet').sheet;
 
     sheet.insertRule(`.token.${token} { color: #${colorObj} }`, sheet.cssRules.length);
+    localStorage[token] = colorObj;
 }
