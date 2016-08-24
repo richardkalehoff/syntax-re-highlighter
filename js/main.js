@@ -21,30 +21,16 @@
         Prism.highlightElement(codeContainer);
         outputContainer.classList.add('has-content');
 
-        tokenList = getInnerTokens(Prism.languages[language]);
-        tokenList = Array.from(new Set(tokenList));
+        tokenList = Array.from(codeContainer.querySelectorAll('span.token'));
+        tokenList = Array.from(new Set(tokenList.map(extractToken)));
         tokenHtml = tokenList.map(tokensToHtml).join('');
 
         displayPrismTokens(prismTokenContainer, tokenHtml);
         fixButtonColors();
     });
 
-    function getInnerTokens(obj) {
-        var tokens = [];
-
-        for (var index in obj) {
-            if (obj.hasOwnProperty(index)) {
-                if (obj[index]['inside'] === undefined) {
-                    tokens.push(index);
-                } else {
-                    tokens.push(index);
-                    let innerTokenList = getInnerTokens(obj[index]['inside']);
-                    tokens = tokens.concat(innerTokenList);
-                }
-            }
-        }
-
-        return tokens;
+    function extractToken(domEl) {
+        return Array.from(domEl.classList).pop();
     }
 
     function fixButtonColors() {
