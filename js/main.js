@@ -84,10 +84,27 @@
     Object.keys(localStorage).map(updateStylesheet);
 })();
 
+function updateUrlWith(url, token, color) {
+    url = new URL(url);
+
+    if (! url.href.includes(token)) {
+        url.searchParams.append(token, color);
+    } else {
+        let tokenList = url.search.slice(1).split('&');
+        let tokenLocation = tokenList.findIndex(pair => pair.includes(token));
+        tokenList.splice(tokenLocation, 1, `${token}=${color}`);
+        url.search = `?${tokenList.join('&')}`;
+    }
+
+    history.pushState(null, '', url)
+}
+
 function updateTokenColor(colorObj, inputEl) {
     var token = inputEl.dataset.token;
     var sheet = document.querySelector('#mainStylesheet').sheet;
 
     sheet.insertRule(`.token.${token} { color: #${colorObj} }`, sheet.cssRules.length);
     localStorage[token] = colorObj;
+
+    updateUrlWith(window.location.href, token, colorObj);
 }
