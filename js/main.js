@@ -34,7 +34,7 @@
     }
 
     function fixButtonColors() {
-        var tokenSpans = document.querySelectorAll('.prismToken')
+        var tokenSpans = Array.from(document.querySelectorAll('.prismToken'));
         tokenSpans.forEach(function(span) {
             var color = window.getComputedStyle(span).getPropertyValue('color');
             color = '#' + color.match(/\d+/g).map(componentToHex).join('');
