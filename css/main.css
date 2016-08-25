@@ -58,6 +58,10 @@ button {
     border: 1px solid black;
 }
 
+#codeContainer {
+    outline: 0 solid transparent;
+}
+
 pre[class*="language-"] {
     background: none;
 }
