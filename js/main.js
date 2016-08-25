@@ -81,6 +81,26 @@
         sheet.insertRule(`.token.${token} { color: #${color} }`, sheet.cssRules.length);
     }
 
+    function useProvidedColors(url) {
+        url = new URL(url);
+
+        if (url.search.length === 0 ) {
+            return;
+        }
+
+        url.search
+            .slice(1)
+            .split('&')
+            .forEach(tokenColorPair => {
+            let sheet = document.querySelector('#mainStylesheet').sheet;
+            let [token, color] = tokenColorPair.split('=');
+
+            sheet.insertRule(`.token.${token} { color: #${color} }`, sheet.cssRules.length);
+        })
+    }
+
+    useProvidedColors(window.location.href);
+
     Object.keys(localStorage).map(updateStylesheet);
 })();
 
