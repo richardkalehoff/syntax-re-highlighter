@@ -27,10 +27,32 @@
 
         displayPrismTokens(prismTokenContainer, tokenHtml);
         fixButtonColors();
+        addHoverableTokens(tokenList);
+        addListeners();
     });
 
     function extractToken(domEl) {
         return Array.from(domEl.classList).pop();
+    }
+
+    function addHoverableTokens(tokens) {
+        var sheet = document.querySelector('#mainStylesheet').sheet;
+        tokens.forEach(function(token) {
+            sheet.insertRule(`.hovered-${token} .token.${token} { box-shadow: 0 0 0 2px red; }`, sheet.cssRules.length);
+        })
+    }
+
+    function addListeners() {
+        var tokenSpans = Array.from(document.querySelectorAll('.prismToken'));
+        tokenSpans.forEach(function(span) {
+            let token = extractToken(span);
+            span.addEventListener('mouseenter', function() {
+                codeContainer.classList.add(`hovered-${token}`);
+            });
+            span.addEventListener('mouseleave', function() {
+                codeContainer.classList.remove(`hovered-${token}`);
+            });
+        });
     }
 
     function fixButtonColors() {
