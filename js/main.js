@@ -8,7 +8,8 @@ const syntaxReHighlighter = (function() {
         languagePicker: document.querySelector('#language'),
         codeContainer: document.querySelector('#codeContainer'),
         prismTokenContainer: document.querySelector('#prismTokens'),
-        outputContainer: document.querySelector('#output')
+        outputContainer: document.querySelector('#output'),
+        mainStylesheet: document.querySelector('#mainStylesheet').sheet
     };
 
     srh.init = function () {
@@ -46,9 +47,8 @@ const syntaxReHighlighter = (function() {
     };
 
     srh.addHoverableTokens = function (tokens) {
-        var sheet = document.querySelector('#mainStylesheet').sheet;
         tokens.forEach(function(token) {
-            sheet.insertRule(`.hovered-${token} .token.${token} { box-shadow: 0 0 0 2px red; }`, sheet.cssRules.length);
+            env.mainStylesheet.insertRule(`.hovered-${token} .token.${token} { box-shadow: 0 0 0 2px red; }`, env.mainStylesheet.cssRules.length);
         })
     };
 
@@ -107,10 +107,9 @@ const syntaxReHighlighter = (function() {
     };
 
     srh.updateStylesheet = function (token) {
-        var sheet = document.querySelector('#mainStylesheet').sheet;
         var color = localStorage[token];
 
-        sheet.insertRule(`.token.${token} { color: #${color} }`, sheet.cssRules.length);
+        env.mainStylesheet.insertRule(`.token.${token} { color: #${color} }`, env.mainStylesheet.cssRules.length);
     };
 
     srh.useProvidedColors = function (url) {
@@ -124,10 +123,9 @@ const syntaxReHighlighter = (function() {
             .slice(1)
             .split('&')
             .forEach(tokenColorPair => {
-            let sheet = document.querySelector('#mainStylesheet').sheet;
             let [token, color] = tokenColorPair.split('=');
 
-            sheet.insertRule(`.token.${token} { color: #${color} }`, sheet.cssRules.length);
+            env.mainStylesheet.insertRule(`.token.${token} { color: #${color} }`, env.mainStylesheet.cssRules.length);
         })
     };
 
@@ -141,9 +139,8 @@ const syntaxReHighlighter = (function() {
 
     srh.updateTokenColor = function (colorObj, inputEl) {
         var token = inputEl.dataset.token;
-        var sheet = document.querySelector('#mainStylesheet').sheet;
 
-        sheet.insertRule(`.token.${token} { color: #${colorObj} }`, sheet.cssRules.length);
+        env.mainStylesheet.insertRule(`.token.${token} { color: #${colorObj} }`, env.mainStylesheet.cssRules.length);
         localStorage[token] = colorObj;
 
         srh.updateUrlWith(window.location.href, token, colorObj);
