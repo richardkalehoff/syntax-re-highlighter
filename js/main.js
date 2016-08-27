@@ -62,6 +62,10 @@ const syntaxReHighlighter = (function() {
             span.addEventListener('mouseleave', function() {
                 env.codeContainer.classList.remove(`hovered-${token}`);
             });
+            span.addEventListener('change', function() {
+                let input = this.querySelector('input');
+                srh.updateTokenColor(input.jscolor, input);
+            });
         });
     };
 
@@ -88,10 +92,10 @@ const syntaxReHighlighter = (function() {
 
     srh.tokensToHtml = function (token) {
         if (Array.isArray(token)) {
-            return token.map(item => `<span class="prismToken token ${item}">${item} <input class="jscolor" onchange="syntaxReHighlighter.updateTokenColor(this.jscolor, this)" data-token=${item}></span>`).join('');
+            return token.map(item => `<span class="prismToken token ${item}">${item} <input class="jscolor" data-token=${item}></span>`).join('');
         }
 
-        return `<span class="prismToken token ${token}">${token} <input class="jscolor" onchange="syntaxReHighlighter.updateTokenColor(this.jscolor, this)" data-token=${token}></span>`;
+        return `<span class="prismToken token ${token}">${token} <input class="jscolor" data-token=${token}></span>`;
     };
 
     srh.getLanguage = function ( el ) {
