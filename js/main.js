@@ -121,6 +121,15 @@
         })
     }
 
+    function fancyHeader() {
+        let el = document.querySelector('h1 span');
+        el.innerHTML = el.textContent
+            .split('')
+            .map((l, idx) => `<span class="letter-${idx}">${l}</span>`)
+            .join('');
+    }
+
+    fancyHeader();
     useProvidedColors(window.location.href);
 
     Object.keys(localStorage).map(updateStylesheet);

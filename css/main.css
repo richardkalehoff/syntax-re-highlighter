@@ -40,6 +40,20 @@ h1 span {
     animation: pulse 5s infinite alternate;
 }
 
+h1 .letter-1 { animation-delay: 0.075s; }
+h1 .letter-2 { animation-delay: 0.15s; }
+h1 .letter-3 { animation-delay: 0.225s; }
+h1 .letter-4 { animation-delay: 0.3s; }
+h1 .letter-5 { animation-delay: 0.375s; }
+h1 .letter-6 { animation-delay: 0.45s; }
+h1 .letter-7 { animation-delay: 0.525s; }
+h1 .letter-8 { animation-delay: 0.6s; }
+h1 .letter-9 { animation-delay: 0.675s; }
+h1 .letter-10 { animation-delay: 0.75s; }
+h1 .letter-11 { animation-delay: 0.825s; }
+h1 .letter-12 { animation-delay: 0.9s; }
+h1 .letter-13 { animation-delay: 0.975s; }
+
 @keyframes pulse {
     0% { color: #000000; }
     10% { color: #795548; }
