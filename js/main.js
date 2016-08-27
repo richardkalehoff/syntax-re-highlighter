@@ -2,14 +2,14 @@
 const syntaxReHighlighter = (function() {
 
     let srh = {};
-
-    var convertBtn = document.querySelector('#convert');
-    var sourceContainer = document.querySelector('#source');
-    var languagePicker = document.querySelector('#language');
-    var codeContainer = document.querySelector('#codeContainer');
-    var prismTokenContainer = document.querySelector('#prismTokens');
-    var outputContainer = document.querySelector('#output');
-    var language;
+    let env = {
+        convertBtn: document.querySelector('#convert'),
+        sourceContainer: document.querySelector('#source'),
+        languagePicker: document.querySelector('#language'),
+        codeContainer: document.querySelector('#codeContainer'),
+        prismTokenContainer: document.querySelector('#prismTokens'),
+        outputContainer: document.querySelector('#output')
+    };
 
     srh.init = function () {
         srh.fancyHeader();
@@ -19,23 +19,23 @@ const syntaxReHighlighter = (function() {
     }
 
 
-    convertBtn.addEventListener('click', function () {
-        language = srh.getLanguage( languagePicker );
-        codeContainer.className = 'language-' + language;
-        var code = srh.convertSource(sourceContainer.value, language);
+    env.convertBtn.addEventListener('click', function () {
+        language = srh.getLanguage(env.languagePicker);
+        env.codeContainer.className = 'language-' + language;
+        var code = srh.convertSource(env.sourceContainer.value, language);
         var tokenList;
         var tokenHtml;
 
-        codeContainer.innerHTML = code;
+        env.codeContainer.innerHTML = code;
 
-        Prism.highlightElement(codeContainer);
-        outputContainer.classList.add('has-content');
+        Prism.highlightElement(env.codeContainer);
+        env.outputContainer.classList.add('has-content');
 
-        tokenList = Array.from(codeContainer.querySelectorAll('span.token'));
+        tokenList = Array.from(env.codeContainer.querySelectorAll('span.token'));
         tokenList = Array.from(new Set(tokenList.map(srh.extractToken)));
         tokenHtml = tokenList.map(srh.tokensToHtml).join('');
 
-        srh.displayPrismTokens(prismTokenContainer, tokenHtml);
+        srh.displayPrismTokens(env.prismTokenContainer, tokenHtml);
         srh.fixButtonColors();
         srh.addHoverableTokens(tokenList);
         srh.addListeners();
@@ -57,10 +57,10 @@ const syntaxReHighlighter = (function() {
         tokenSpans.forEach(function(span) {
             let token = srh.extractToken(span);
             span.addEventListener('mouseenter', function() {
-                codeContainer.classList.add(`hovered-${token}`);
+                env.codeContainer.classList.add(`hovered-${token}`);
             });
             span.addEventListener('mouseleave', function() {
-                codeContainer.classList.remove(`hovered-${token}`);
+                env.codeContainer.classList.remove(`hovered-${token}`);
             });
         });
     };
