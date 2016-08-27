@@ -48,7 +48,7 @@ const syntaxReHighlighter = (function() {
 
     srh.addHoverableTokens = function (tokens) {
         tokens.forEach(function(token) {
-            env.mainStylesheet.insertRule(`.hovered-${token} .token.${token} { box-shadow: 0 0 0 2px red; }`, env.mainStylesheet.cssRules.length);
+            srh.addToStylesheet(`.hovered-${token} .token.${token} { box-shadow: 0 0 0 2px red; }`);
         })
     };
 
@@ -109,8 +109,16 @@ const syntaxReHighlighter = (function() {
     srh.updateStylesheet = function (token) {
         var color = localStorage[token];
 
-        env.mainStylesheet.insertRule(`.token.${token} { color: #${color} }`, env.mainStylesheet.cssRules.length);
+        srh.addTokenColorToStylesheet(token, color);
     };
+
+    srh.addToStylesheet = function(cssDeclaration) {
+        env.mainStylesheet.insertRule(cssDeclaration, env.mainStylesheet.cssRules.length);
+    }
+
+    srh.addTokenColorToStylesheet = function (token, color) {
+        srh.addToStylesheet(`.token.${token} { color: #${color} }`);
+    }
 
     srh.useProvidedColors = function (url) {
         url = new URL(url);
@@ -125,7 +133,7 @@ const syntaxReHighlighter = (function() {
             .forEach(tokenColorPair => {
             let [token, color] = tokenColorPair.split('=');
 
-            env.mainStylesheet.insertRule(`.token.${token} { color: #${color} }`, env.mainStylesheet.cssRules.length);
+            srh.addTokenColorToStylesheet(token, color);
         })
     };
 
@@ -140,7 +148,7 @@ const syntaxReHighlighter = (function() {
     srh.updateTokenColor = function (colorObj, inputEl) {
         var token = inputEl.dataset.token;
 
-        env.mainStylesheet.insertRule(`.token.${token} { color: #${colorObj} }`, env.mainStylesheet.cssRules.length);
+        srh.addTokenColorToStylesheet(token, colorObj);
         localStorage[token] = colorObj;
 
         srh.updateUrlWith(window.location.href, token, colorObj);
