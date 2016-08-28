@@ -92,10 +92,14 @@ const syntaxReHighlighter = (function() {
 
     srh.tokensToHtml = function (token) {
         if (Array.isArray(token)) {
-            return token.map(item => `<span class="prismToken token ${item}">${item} <input class="jscolor" data-token=${item}></span>`).join('');
+            return token.map(srh.createToken).join('');
         }
 
-        return `<span class="prismToken token ${token}">${token} <input class="jscolor" data-token=${token}></span>`;
+        return srh.createToken(token);
+    };
+
+    srh.createToken = function (token) {
+        return `<span class="prismToken token ${token}">${token} <input class="jscolor" data-token=${token}></span>`
     };
 
     srh.getLanguage = function ( el ) {
