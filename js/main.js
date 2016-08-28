@@ -139,10 +139,9 @@ const syntaxReHighlighter = (function() {
             .slice(1)
             .split('&')
             .forEach(tokenColorPair => {
-            let [token, color] = tokenColorPair.split('=');
-
-            srh.addTokenColorToStylesheet(token, color);
-        })
+                let [token, color] = tokenColorPair.split('=');
+                srh.addTokenColorToStylesheet(token, color);
+            });
     };
 
     srh.fancyHeader = function () {
