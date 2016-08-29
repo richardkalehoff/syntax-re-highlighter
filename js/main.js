@@ -12,6 +12,19 @@ const syntaxReHighlighter = (function() {
         mainStylesheet: document.querySelector('#mainStylesheet').sheet
     };
 
+    let helpers = {
+        colorToHex: function (c) {
+            const hex = parseInt(c).toString(16)
+            return hex.length === 1 ? '0' + hex : hex
+        },
+        getSelectedLanguage: function ( el ) {
+            return el.options[ el.selectedIndex ].value;
+        },
+        extractTokenFromClass: function (domEl) {
+            return Array.from(domEl.classList).pop();
+        }
+    };
+
     srh.init = function () {
         srh.fancyHeader();
         srh.useProvidedColors(window.location.href);
@@ -21,7 +34,7 @@ const syntaxReHighlighter = (function() {
 
 
     env.convertBtn.addEventListener('click', function () {
-        language = srh.getLanguage(env.languagePicker);
+        language = helpers.getSelectedLanguage(env.languagePicker);
         env.codeContainer.className = 'language-' + language;
         var code = srh.convertSource(env.sourceContainer.value, language);
         var tokenList;
@@ -33,7 +46,7 @@ const syntaxReHighlighter = (function() {
         env.outputContainer.classList.add('has-content');
 
         tokenList = Array.from(env.codeContainer.querySelectorAll('span.token'));
-        tokenList = Array.from(new Set(tokenList.map(srh.extractToken)));
+        tokenList = Array.from(new Set(tokenList.map(helpers.extractTokenFromClass)));
         tokenHtml = tokenList.map(srh.tokensToHtml).join('');
 
         srh.displayPrismTokens(env.prismTokenContainer, tokenHtml);
@@ -41,10 +54,6 @@ const syntaxReHighlighter = (function() {
         srh.addHoverableTokens(tokenList);
         srh.addListeners();
     });
-
-    srh.extractToken = function (domEl) {
-        return Array.from(domEl.classList).pop();
-    };
 
     srh.addHoverableTokens = function (tokens) {
         tokens.forEach(function(token) {
@@ -55,7 +64,7 @@ const syntaxReHighlighter = (function() {
     srh.addListeners = function () {
         var tokenSpans = Array.from(document.querySelectorAll('.prismToken'));
         tokenSpans.forEach(function(span) {
-            let token = srh.extractToken(span);
+            let token = helpers.extractTokenFromClass(span);
             span.addEventListener('mouseenter', function() {
                 env.codeContainer.classList.add(`hovered-${token}`);
             });
@@ -73,16 +82,11 @@ const syntaxReHighlighter = (function() {
         var tokenSpans = Array.from(document.querySelectorAll('.prismToken'));
         tokenSpans.forEach(function(span) {
             var color = window.getComputedStyle(span).getPropertyValue('color');
-            color = '#' + color.match(/\d+/g).map(srh.componentToHex).join('');
+            color = '#' + color.match(/\d+/g).map(helpers.colorToHex).join('');
             span.querySelector('input').value = color;
         });
 
         jscolor.installByClassName('jscolor');
-    };
-
-    srh.componentToHex = function (c) {
-        const hex = parseInt(c).toString(16)
-        return hex.length === 1 ? '0' + hex : hex
     };
 
     srh.displayPrismTokens = function (el, html) {
@@ -100,10 +104,6 @@ const syntaxReHighlighter = (function() {
 
     srh.createToken = function (token) {
         return `<span class="prismToken token ${token}">${token} <input class="jscolor" data-token=${token}></span>`
-    };
-
-    srh.getLanguage = function ( el ) {
-        return el.options[ el.selectedIndex ].value;
     };
 
     srh.convertSource = function (source, language) {
