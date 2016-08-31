@@ -1,5 +1,5 @@
-/*global Prism*/
-const syntaxReHighlighter = (function() {
+/*global Prism, jscolor, he*/
+const syntaxReHighlighter = (function () {
 
     let srh = {};
     let env = {
@@ -14,10 +14,10 @@ const syntaxReHighlighter = (function() {
 
     let helpers = {
         colorToHex: function (c) {
-            const hex = parseInt(c).toString(16)
-            return hex.length === 1 ? '0' + hex : hex
+            const hex = parseInt(c).toString(16);
+            return hex.length === 1 ? '0' + hex : hex;
         },
-        getSelectedLanguage: function ( el ) {
+        getSelectedLanguage: function (el) {
             return el.options[ el.selectedIndex ].value;
         },
         extractTokenFromClass: function (domEl) {
@@ -30,11 +30,11 @@ const syntaxReHighlighter = (function() {
         srh.useProvidedColors(window.location.href);
 
         Object.keys(localStorage).map(srh.updateStylesheet);
-    }
+    };
 
 
     env.convertBtn.addEventListener('click', function () {
-        language = helpers.getSelectedLanguage(env.languagePicker);
+        var language = helpers.getSelectedLanguage(env.languagePicker);
         env.codeContainer.className = 'language-' + language;
         var code = srh.convertSource(env.sourceContainer.value, language);
         var tokenList;
@@ -56,22 +56,22 @@ const syntaxReHighlighter = (function() {
     });
 
     srh.addHoverableTokens = function (tokens) {
-        tokens.forEach(function(token) {
+        tokens.forEach(function (token) {
             srh.addToStylesheet(`.hovered-${token} .token.${token} { box-shadow: 0 0 0 2px red; }`);
-        })
+        });
     };
 
     srh.addListeners = function () {
         var tokenSpans = Array.from(document.querySelectorAll('.prismToken'));
-        tokenSpans.forEach(function(span) {
+        tokenSpans.forEach(function (span) {
             let token = helpers.extractTokenFromClass(span);
-            span.addEventListener('mouseenter', function() {
+            span.addEventListener('mouseenter', function () {
                 env.codeContainer.classList.add(`hovered-${token}`);
             });
-            span.addEventListener('mouseleave', function() {
+            span.addEventListener('mouseleave', function () {
                 env.codeContainer.classList.remove(`hovered-${token}`);
             });
-            span.addEventListener('change', function() {
+            span.addEventListener('change', function () {
                 let input = this.querySelector('input');
                 srh.updateTokenColor(input.jscolor, input);
             });
@@ -80,7 +80,7 @@ const syntaxReHighlighter = (function() {
 
     srh.fixButtonColors = function () {
         var tokenSpans = Array.from(document.querySelectorAll('.prismToken'));
-        tokenSpans.forEach(function(span) {
+        tokenSpans.forEach(function (span) {
             var color = window.getComputedStyle(span).getPropertyValue('color');
             color = '#' + color.match(/\d+/g).map(helpers.colorToHex).join('');
             span.querySelector('input').value = color;
@@ -103,12 +103,12 @@ const syntaxReHighlighter = (function() {
     };
 
     srh.createToken = function (token) {
-        return `<span class="prismToken token ${token}">${token} <input class="jscolor" data-token=${token}></span>`
+        return `<span class="prismToken token ${token}">${token} <input class="jscolor" data-token=${token}></span>`;
     };
 
     srh.convertSource = function (source, language) {
         if (language === 'markup') {
-            source = he.encode( source );
+            source = he.encode(source);
         }
 
         return source;
@@ -120,18 +120,18 @@ const syntaxReHighlighter = (function() {
         srh.addTokenColorToStylesheet(token, color);
     };
 
-    srh.addToStylesheet = function(cssDeclaration) {
+    srh.addToStylesheet = function (cssDeclaration) {
         env.mainStylesheet.insertRule(cssDeclaration, env.mainStylesheet.cssRules.length);
-    }
+    };
 
     srh.addTokenColorToStylesheet = function (token, color) {
         srh.addToStylesheet(`.token.${token} { color: #${color} }`);
-    }
+    };
 
     srh.useProvidedColors = function (url) {
         url = new URL(url);
 
-        if (url.search.length === 0 ) {
+        if (url.search.length === 0) {
             return;
         }
 
@@ -159,7 +159,7 @@ const syntaxReHighlighter = (function() {
         localStorage[token] = colorObj;
 
         srh.updateUrlWith(window.location.href, token, colorObj);
-    }
+    };
 
     srh.updateUrlWith = function (url, token, color) {
         url = new URL(url);
@@ -173,8 +173,8 @@ const syntaxReHighlighter = (function() {
             url.search = `?${tokenList.join('&')}`;
         }
 
-        history.pushState(null, '', url)
-    }
+        history.pushState(null, '', url);
+    };
 
     return srh;
 })();
